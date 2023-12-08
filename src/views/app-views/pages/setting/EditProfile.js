@@ -15,7 +15,11 @@ import {
 import { UserOutlined } from "@ant-design/icons";
 import { ROW_GUTTER } from "constants/ThemeConstant";
 import Flex from "components/shared-components/Flex";
-import { getSingleUserReques, updateUser, getALlUsersRequest} from "redux/actions/Users";
+import {
+  getSingleUserReques,
+  updateUser,
+  getALlUsersRequest,
+} from "redux/actions/Users";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom/cjs/react-router-dom";
 
@@ -33,16 +37,12 @@ export class EditProfile extends Component {
     reader.readAsDataURL(img);
   }
   async componentDidMount() {
-    const { getSingleUserReques, match, getALlUsersRequest} = this.props;
+    const { getSingleUserReques, match, getALlUsersRequest } = this.props;
     await getSingleUserReques(match?.params.id);
-	await getALlUsersRequest();
+    await getALlUsersRequest();
   }
-// shouldComponentUpdate(nextProps, nextState){
-// 	console.log(nextProps)
-// 	return false
-// }
+
   async componentDidUpdate(prevProps) {
-  
     if (prevProps.user !== this.props.user) {
       this.formRef.current.setFieldsValue({
         id: this.props.user.id,
@@ -58,15 +58,13 @@ export class EditProfile extends Component {
     }
   }
   render() {
-    // console.log(this.)
-    const onFinish =async(values) => {
+    const onFinish = async (values) => {
       const { updateUser, history, match } = this.props;
-    //   console.log({ ...values, Id: match.params.id });
-  await    updateUser({ ...values, Id: match.params.id,address:{} });
-//   const nav = useNavigate
-      history.push("/app/pages/user-list/");
-
-	
+      await updateUser({ ...values, Id: match.params.id, address: {} });
+      setTimeout(() => {
+        // Navigate to the "/app/pages/user-list/" route after 3 seconds
+        history.push("/app/pages/user-list/");
+      }, 3000);
     };
 
     const onFinishFailed = (errorInfo) => {
@@ -224,7 +222,7 @@ const mapStateToProps = ({ users }) => {
 const mapDispatchToProps = {
   getSingleUserReques,
   updateUser,
-  getALlUsersRequest
+  getALlUsersRequest,
 };
 
 export default connect(
